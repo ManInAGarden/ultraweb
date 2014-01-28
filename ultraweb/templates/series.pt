@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>Ultraweb - Ultramat data web viewer</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <meta name="keywords" content="python web application" />
+  <meta name="description" content="pyramid web application" />
+  <link rel="stylesheet" href="${request.static_url('ultraweb:static/ultraweb.css')}" type="text/css" media="screen" charset="utf-8" />
+  <!--[if lte IE 6]>
+  <link rel="stylesheet" href="${request.static_url('ultraweb:static/ie6.css')}" type="text/css" media="screen" charset="utf-8" />
+  <![endif]-->
+</head>
+<body>
+  <div id="wrap">
+    <div id="top" class="topdiv">
+	<h1>${heading}</h1>
+    </div>
+    <div id="middle" class="middlediv">
+        
+	       <table id="hor-minimalist-a">
+	            <thead>
+	            <tr>
+                        <th></th>
+	                <th scope="col">#</th>
+	                <th scope="col">Erzeugt am</th>
+	                <th scope="col">Name</th>
+	                <th scope="col">Modus</th>
+	                <th scope="col">Beschreibung</th>
+	            <tr>
+	            </thead>
+	            <tbody>
+		            <tr tal:repeat="item items">
+		               <td>
+	                               <a href="series/view/${item.Id}">V</a> &middot;
+	                               <a href="series/edit/${item.Id}">E</a> &middot;
+	                               <a href="series/delete/${item.Id}">D</a> 
+                               </td>
+		               <td tal:content="repeat.item.number">1</td>
+		               <td tal:content="item.Created">Time of series</td>
+		               <td tal:content="item.Name">Name of series</td>
+			       <td tal:content="item.Mode">Mode</td>
+			       <td tal:content="item.Description">Description</td>
+		           </tr>
+	            </tbody>
+	       </table>
+        
+    </div>
+    <div id="bottom" class = "footerdiv">
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>Ultraweb - Ultramat data web viewer</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <meta name="keywords" content="python web application" />
+  <meta name="description" content="pyramid web application" />
+  <link rel="stylesheet" href="${request.static_url('ultraweb:static/ultraweb.css')}" type="text/css" media="screen" charset="utf-8" />
+  <!--[if lte IE 6]>
+  <link rel="stylesheet" href="${request.static_url('ultraweb:static/ie6.css')}" type="text/css" media="screen" charset="utf-8" />
+  <![endif]-->
+</head>
+<body>
+  <div id="wrap">
+    <div id="top" class="topdiv">
+	<h1>${heading}</h1>
+    </div>
+    <div id="middle" class="middlediv">
+	       <table id="hor-minimalist-a">
+	            <thead>
+	            <tr>
+                        <th></th>
+	                <th scope="col" ALIGN=RIGHT>#</th>
+	                <th scope="col" ALIGN=RIGHT>Zeitpunkt</th>
+	                <th scope="col" ALIGN=RIGHT>Akk.-Kapazität</th>
+	                <th scope="col" ALIGN=RIGHT>Ladestrom</th>
+	                <th scope="col" ALIGN=RIGHT>Uges</th>
+	                <th scope="col" ALIGN=RIGHT>U1</th>
+			<th scope="col" ALIGN=RIGHT>U2</th>
+			<th scope="col" ALIGN=RIGHT>U3</th>
+			<th scope="col" ALIGN=RIGHT>U4</th>
+			<th scope="col" ALIGN=RIGHT>U5</th>
+			<th scope="col" ALIGN=RIGHT>U6</th>
+			<th scope="col" ALIGN=RIGHT>U7</th>
+			<th scope="col" ALIGN=RIGHT>U8</th>
+			<th scope="col" ALIGN=RIGHT>U9</th>
+			<th scope="col" ALIGN=RIGHT>U10</th>
+			<th scope="col" ALIGN=RIGHT>U11</th>
+			<th scope="col" ALIGN=RIGHT>U12</th>
+	            <tr>
+	            </thead>
+	            <tbody>
+		            <tr tal:repeat="valueset valuesets">
+		               <td>
+	                          
+                               </td>
+		               <td tal:content="repeat.valueset.number">1</td>
+		               <td tal:content="valueset.t" ALIGN=RIGHT>time</td>
+		               <td tal:content="valueset.Ladung" ALIGN=RIGHT>Ladung</td>
+		               <td tal:content="valueset.Strom" ALIGN=RIGHT>Ladestrom</td>
+		               <td tal:content="valueset.Spannung" ALIGN=RIGHT>Name of series</td>
+			       <td tal:content="valueset.Spannung_1" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_2" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_3" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_4" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_5" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_6" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_7" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_8" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_9" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_10" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_11" ALIGN=RIGHT>Mode</td>
+			       <td tal:content="valueset.Spannung_12" ALIGN=RIGHT>Mode</td>
+		           </tr>
+	            </tbody>
+	       </table>
+        
+    </div>
+    <div id="bottom" class = "footerdiv">
+    <a href="www.google.de">Zurück</a>
+    </div>
+  </div>
+</body>
+</html>
