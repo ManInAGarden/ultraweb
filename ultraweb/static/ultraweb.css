@@ -3,10 +3,17 @@
 /* ------------------
  styling for the tables like from smashing magazine
    ------------------   */
+   
+/* colours:
+#CDB1E3
+#E3CDB1
+#B1E3CD
+*/
 
 body
 {
 	line-height: 1.6em;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 }
 
 #hor-minimalist-a
@@ -15,7 +22,7 @@ body
 	font-size: 12px;
 	background: #fff;
 	margin: 45px;
-	width: 480px;
+	width: 1000px;
 	border-collapse: collapse;
 	text-align: left;
 }
@@ -67,7 +74,23 @@ body
 	color: #009;
 }
 
-H1 { font-size: x-large; color: white }
-H2 { font-size: large; color: black }
+H1 { font-size: x-large; color: #039 }
+H2 { font-size: large; color: #039 }
 
-DIV.topdiv {background : #039}
+TD.label { font-size: large; color: #039; text-align: right; }
+TD.ReadOnlyField { background-color: #F3DDC1; color: #039; border:none; padding: 3px;}
+em.label { font-size: large; color: #039 }
+
+
+DIV.topdiv {background : #CDB1E3}
+DIV.footerdiv {background : #CDB1E3}
+DIV.error {background: red; color: white}
+
+
+.Button { background-color:#CDB1E3; color: #039; border:none; font-weight:bold;}
+input.TextBox { background-color: #E3CDB1; color: #039; border: 1px solid #669; padding: 3px;}
+
+A:link.LinkButton { background-color:#CDB1E3; color: #039; border:none; font-weight:bold; text-decoration:none;}
+A:focus.LinkButton { background-color:#CDB1E3; color: #039; border:none; font-weight:bold; text-decoration:none;}
+A:hover.LinkButton { background-color:#E3CDB1; color: #039; border:none; font-weight:bold; text-decoration:none;}
+A:active.LinkButton { background-color:#CDB1E3; color: #039; border:none; font-weight:bold; text-decoration:none;}

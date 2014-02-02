@@ -15,8 +15,14 @@
     <div id="top" class="topdiv">
 	<h1>${heading}</h1>
     </div>
+    <div id="error" class="error" style="display=none">
+    <h1>${msg_title}</h1>
+    <p>
+    ${message}
+    </p>
+    </div>
     <div id="middle" class="middlediv">
-	       <table id="hor-minimalist-a">
+	       <table id="hor-minimalist-a" width="100%">
 	            <thead>
 	            <tr>
                         <th></th>
@@ -67,7 +73,7 @@
         
     </div>
     <div id="bottom" class = "footerdiv">
-    <a href="www.google.de">Zurück</a>
+    <a href="${request.route_url('series')}">Zurück</a>
     </div>
   </div>
 </body>

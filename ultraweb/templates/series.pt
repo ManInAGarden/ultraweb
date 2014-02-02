@@ -15,27 +15,26 @@
     <div id="top" class="topdiv">
 	<h1>${heading}</h1>
     </div>
-    <div id="middle" class="middlediv">
-        
+    <div id="middle" class="middlediv">   
 	       <table id="hor-minimalist-a">
 	            <thead>
 	            <tr>
                         <th></th>
-	                <th scope="col">#</th>
-	                <th scope="col">Erzeugt am</th>
-	                <th scope="col">Name</th>
-	                <th scope="col">Modus</th>
-	                <th scope="col">Beschreibung</th>
+	                <th scope="col" align="right">#</th>
+	                <th scope="col" align="left">Erzeugt am</th>
+	                <th scope="col" align="left">Name</th>
+	                <th scope="col" align="left">Modus</th>
+	                <th scope="col" align="left">Beschreibung</th>
 	            <tr>
 	            </thead>
 	            <tbody>
 		            <tr tal:repeat="item items">
 		               <td>
-	                               <a href="series/view/${item.Id}">V</a> &middot;
-	                               <a href="series/edit/${item.Id}">E</a> &middot;
-	                               <a href="series/delete/${item.Id}">D</a> 
+	                               <a class="LinkButton" href="series/view/${item.Id}">V</a> &middot;
+	                               <a class="LinkButton" href="series/edit/${item.Id}">E</a> &middot;
+	                               <a class="LinkButton" href="series/delete/${item.Id}">D</a> 
                                </td>
-		               <td tal:content="repeat.item.number">1</td>
+		               <td align="right" tal:content="repeat.item.number">1</td>
 		               <td tal:content="item.Created">Time of series</td>
 		               <td tal:content="item.Name">Name of series</td>
 			       <td tal:content="item.Mode">Mode</td>
@@ -46,6 +45,7 @@
         
     </div>
     <div id="bottom" class = "footerdiv">
+	    <a class="LinkButton" href="${request.route_url('series')}">Zurück</a>
     </div>
   </div>
 </body>

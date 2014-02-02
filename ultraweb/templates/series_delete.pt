@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>Ultraweb - Ultramat data web viewer</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <meta name="keywords" content="python web application" />
+  <meta name="description" content="pyramid web application" />
+  <link rel="stylesheet" href="${request.static_url('ultraweb:static/ultraweb.css')}" type="text/css" media="screen" charset="utf-8" />
+  <!--[if lte IE 6]>
+  <link rel="stylesheet" href="${request.static_url('ultraweb:static/ie6.css')}" type="text/css" media="screen" charset="utf-8" />
+  <![endif]-->
+</head>
+<body>
+  <div id="wrap">
+    <div id="top" class="topdiv">
+	<h1>${heading}</h1>
+    </div>
+    <div id="error" class="error" style="display=none">
+    <h1>${msg_title}</h1>
+    <p>
+    ${message}
+    </p>
+    </div>
+    <div id="middle" class="middlediv">
+	    <form action="${request.route_url('series_delete',id=id)}" method="post">
+	     		<table cellspacing="4" border="0" cellpadding="0">
+	    		<tr>
+	    			<td><input name="Id" type="hidden" value="${series.Id}"/></td>
+	    		</tr>
+	    		<tr>
+		    		<td class="label">Name:</td>
+		    		<td class="ReadOnlyField">${series.Name}</td>
+	    		</tr>
+	    		<tr>
+		    		<td class="label">Modus:</td>
+		    		<td class="ReadOnlyField">${series.Mode}</td>
+	    		</tr>
+	   		<tr>
+		    		<td class="label">Beschreibung:</td>
+		    		<td class="ReadOnlyField">${series.Description}</td>
+	    		</tr>
+			<tr>
+				<td class="label">Anzahl Werte:</td>
+	    			<td class="ReadOnlyField">${datacount}</td>
+			</tr>
+	    		<tr>
+	    			<td colspan="2" align="right"><input class="Button" type="submit" name="delete" value="Löschen" class="Button"></td>
+	    		</tr>
+			</table>
+	   
+	        
+	    </form>
+    </div>
+    <div id="bottom" class = "footerdiv">
+	    <a class="LinkButton" href="${request.route_url('series')}">Zurück</a>
+    </div>
+  </div>
+</body>
+</html>

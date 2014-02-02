@@ -4,7 +4,7 @@ from pyramid.view import view_config
 import datetime as dt
 import sqlitemeasures as sqm
 
-SQM_DB_FILE = '/home/pi/ultrapy.db'
+SQM_DB_FILE = '/home/tiger/ultrapy.db'
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
 def my_view(request):
@@ -46,25 +46,37 @@ class ValueSet:
         self.Spannung_12 = 0.0
 
 
-@view_config(route_name='series_action', renderer='templates/series_action.pt')
+@view_config(route_name='series_view', renderer='templates/series_view.pt')
 class SeriesActionResponse:
     def __init__(self, request):
-        print('Init SeriesResponse', request.matchdict['action'], request.matchdict['id'])
+        print('Init SeriesResponse - view',  request.matchdict['id'])
         sqm.Series.initialize(SQM_DB_FILE)
         sqm.Value.initialize(SQM_DB_FILE)
         sqm.Unit.initialize(SQM_DB_FILE)
         self.request = request
-        self.action = request.matchdict['action']
         self.id = request.matchdict['id']
+        self.msg_title = ''
+        self.message = ''
         self.response = {}
         
-        
-    def __call__(self):
-        series = sqm.Series.select(whereClause="Id='" + self.id + "'")
-        values = sqm.Value.select(whereClause="SeriesId='" + str(series[0].Id) + "'", orderBy='Created')
 
-        self.response['heading'] = u'Messwerte der Serie ' + series[0].Name + ' vom ' + str(series[0].Created)
-        self.response['valuesets'] = self.get_values(values)
+    def show_message(self, title, message):
+        self.msg_title = title
+        self.message = message
+
+    def __call__(self):
+        valsets = []
+        heading = '???'
+        series = sqm.Series.select(whereClause="Id='" + self.id + "'")
+                
+        values = sqm.Value.select(whereClause="SeriesId='" + str(series[0].Id) + "'", orderBy='Created')
+        valsets = self.get_values(values)
+        heading = u'Messwerte der Serie ' + series[0].Name + ' vom ' + str(series[0].Created)
+
+        self.response['heading'] = heading
+        self.response['valuesets'] = valsets
+        self.response['msg_title'] = self.msg_title
+        self.response['message'] = self.message
         return self.response
 
     def get_values(self, vals):

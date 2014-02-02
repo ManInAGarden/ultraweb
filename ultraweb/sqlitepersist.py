@@ -178,9 +178,7 @@ class PBase(object):
 
         if cls.TableExists == False:
             cls.evtly_create_table()
-        
-        con = sqlite3.connect(cls.FileName)
-        con.row_factory = sqlite3.Row
+
         stmt = "SELECT * from " + cls.TableName
 
         if whereClause != None:
@@ -192,6 +190,10 @@ class PBase(object):
         cls.log_statement(stmt)
 
         rows = None
+        
+        con = sqlite3.connect(cls.FileName)
+        con.row_factory = sqlite3.Row
+       
         with con:
             cur = con.cursor()
             cur.execute(stmt)
@@ -213,11 +215,28 @@ class PBase(object):
         return answ
 
     @classmethod
+    def delete(cls, whereClause=None):
+        if whereClause==None:
+            raise Exception('where clause none in delete not allowed')
+
+        if cls.FileName == None:
+              raise Exception("persistent class <" + cls.__name__ + "> is not initialized")
+
+        stmt = "DELETE FROM " + cls.TableName + " WHERE " + whereClause
+        cls.log_statement(stmt)
+        
+        con = sqlite3.connect(cls.FileName)
+        with con:
+            con.execute(stmt)
+
+
+        
+    @classmethod
     def get_data_py_style(cls, dta, tdesc):
         answ = None
         t_tdesc = type(tdesc)
         if t_tdesc == Text:
-            answ = dta
+            answ = cls.re_escape(dta)
         elif t_tdesc == DateTime:
             answ = datetime.datetime.fromtimestamp(dta)
         elif t_tdesc == Id or t_tdesc== ForeignKeyId  or t_tdesc == MultiClassForeignKeyId:
@@ -305,7 +324,7 @@ class PBase(object):
         answ = None
         #print("getting <" + attname + "> for Type <" + str(tdesc) + ">")
         if type(tdesc)==Text:
-            answ = "'" + str(getattr(self, attname, "None")) +  "'"
+            answ = "'" + self.escape(getattr(self, attname, "None")) +  "'"
         elif type(tdesc)==DateTime:
             since_70 = getattr(self, attname, datetime.datetime(1970,1,1)) - datetime.datetime(1970,1,1)
             answ = str(since_70.total_seconds())
@@ -317,6 +336,14 @@ class PBase(object):
             raise Exception("unknown type <" + str(tdesc) + ">")
 
         return answ
+
+    def escape(self, ins):
+        answ = unicode(ins)
+        return answ.replace("'", "#tick#")
+
+    @classmethod
+    def re_escape(cls, ins):
+        return ins.replace("#tick#", "'")
 
 
     def __do_update(self, con):
