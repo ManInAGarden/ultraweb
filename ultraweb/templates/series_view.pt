@@ -1,10 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
 <head>
+  <script type="text/javascript" src="${request.static_url('ultraweb:static/svg.jquery.js')}"></script>
+  <script type="text/javascript" src="${request.static_url('ultraweb:static/pygal-tooltips.js')}"></script>
+
   <title>Ultraweb - Ultramat data web viewer</title>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
   <meta name="keywords" content="python web application" />
   <meta name="description" content="pyramid web application" />
+ 
+ 
   <link rel="stylesheet" href="${request.static_url('ultraweb:static/ultraweb.css')}" type="text/css" media="screen" charset="utf-8" />
   <!--[if lte IE 6]>
   <link rel="stylesheet" href="${request.static_url('ultraweb:static/ie6.css')}" type="text/css" media="screen" charset="utf-8" />
@@ -20,6 +25,11 @@
     <p>
     ${message}
     </p>
+    </div>
+    <div id="graph" class="graphics">
+    	<figure>
+      		${structure: graphics}
+    	</figure>
     </div>
     <div id="middle" class="middlediv">
 	       <table id="hor-minimalist-a" width="100%">

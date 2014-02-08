@@ -4,6 +4,8 @@ from pyramid.view import view_config
 import datetime as dt
 import sqlitemeasures as sqm
 
+import pygal
+
 SQM_DB_FILE = '/home/tiger/ultrapy.db'
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -69,7 +71,7 @@ class SeriesActionResponse:
         heading = '???'
         series = sqm.Series.select(whereClause="Id='" + self.id + "'")
                 
-        values = sqm.Value.select(whereClause="SeriesId='" + str(series[0].Id) + "'", orderBy='Created')
+        values = sqm.Value.select(whereClause="SeriesId='" + str(self.id) + "'", orderBy='Created')
         valsets = self.get_values(values)
         heading = u'Messwerte der Serie ' + series[0].Name + ' vom ' + str(series[0].Created)
 
@@ -77,9 +79,10 @@ class SeriesActionResponse:
         self.response['valuesets'] = valsets
         self.response['msg_title'] = self.msg_title
         self.response['message'] = self.message
+        self.response['graphics'] = self.render_graphics(self.id, values)
         return self.response
 
-    def get_values(self, vals):
+    def get_values(self, vals, do_units=True):
         answ = []
         old_time = None
         val_set = None
@@ -94,14 +97,16 @@ class SeriesActionResponse:
                 val_set = ValueSet()
                 val_set.t = '{0:%H:%M:%S}'.format(val.t)
             
-            #print("adding <" + val.Name + "> = <" + str(val.Value) + ">")
-            unit = val.resolve('UnitId')
-            unitstr = ''
-            if unit != None:
-                unitstr = unit.Name
+            if do_units==True:
+                unit = val.resolve('UnitId')
+                unitstr = ''
+                if unit != None:
+                    unitstr = unit.Name
                 
-            setattr(val_set, val.Name,
+                setattr(val_set, val.Name,
                     self.format_value(val.Name, val.Value, unitstr))
+            else:
+                setattr(val_set, val.Name, val.Value)
                 
         return answ
 
@@ -124,3 +129,85 @@ class SeriesActionResponse:
 
 
         return vals
+
+    def render_graphics(self, id, values):
+        filename = str(id) + '.svg'
+
+        line_c = pygal.Line(disable_xml_declaration = True, x_title='t/s',
+                            x_label_rotation=90, x_labels_major_every=3,
+                            show_minor_x_labels=False)
+        line_c.title = 'Lade-/Entladediagramm'
+
+        maxsec = 0
+        lines = {'Ladung': [],
+                 'Strom' : [],
+                 'Spannung' : [],
+                 'Spannung_1': [],
+                 'Spannung_2': [],
+                 'Spannung_3': [],
+                 'Spannung_4': [],
+                 'Spannung_5': [],
+                 'Spannung_6': [],
+                 'Spannung_7': [],
+                 'Spannung_8': [],
+                 'Spannung_9': [],
+                 'Spannung_10': [],
+                 'Spannung_11': [],
+                 'Spannung_12': []}
+        
+        x_axis = []
+
+        do_disp = {}
+        units = {}
+        for key in lines.keys():
+            do_disp[key] = False
+            units[key] = None
+        
+        old_time = None
+        curr_secs = 0
+        start_time = None
+        for val in values:
+            if start_time == None:
+                start_time = val.t
+                
+            if val.t != old_time:
+                old_time = val.t
+                currsecs = (old_time - start_time).total_seconds()
+                x_axis.append(currsecs)
+         
+            if val.Name in lines:
+                lines[val.Name].append(val.Value)
+                if val.Value != 0.0:
+                    do_disp[val.Name] = True
+                    
+                if units[val.Name] == None:
+                    erg = sqm.Unit.select(whereClause="Id='" + str(val.UnitId) + "'")
+                    if len(erg)==1:
+                        units[val.Name] = erg[0].Name
+                    
+        for key in lines.keys():
+            if do_disp[key] == True:
+                if key.startswith('Spannung'):
+                    sec = True
+                else:
+                    sec = False
+
+                name = self.get_line_name(key)
+                line_c.add(name + '/' + units[key], lines[key], secondary=sec)
+            
+
+        line_c.x_labels = map(str, x_axis)
+        
+        return line_c.render()
+        
+    def get_line_name(self, key):
+        name = key
+        if key.startswith('Spannung'):
+            if key=='Spannung':
+                name = 'Uges'
+            else:
+                name = key.replace('Spannung_', 'U')
+        elif key=='Strom':
+            name = 'Iges'
+            
+        return name
